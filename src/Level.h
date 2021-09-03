@@ -56,7 +56,7 @@ public:
 private:
 	void UserInteraction() {
 		gui->update(
-			*levelIndex,
+			levelIndex,
 			circles->size(),
 			initialCirclesAmount,
 			timeLimit - timer,

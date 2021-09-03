@@ -53,9 +53,10 @@ public:
 	std::vector<Button*> buttons;
 	olc::Pixel textColour = olc::DARK_BLUE;
 	int textScale = 2;
+	olc::Decal* restartButton = new olc::Decal(new olc::Sprite("./assets/btnRestart.png"));
 
 	void update(
-		int levelIndex,
+		int* levelIndex,
 		int circlesRemaining,
 		int initialCircleAmount,
 		float timeRemaining,
@@ -71,18 +72,32 @@ public:
 				}
 			}
 		}
+		olc::vf2d restartButtonPosition = olc::vf2d(160, 10);
+		pge->DrawDecal(restartButtonPosition, restartButton);
+		
+		// I do a check for the mouse being pressed above but I couldn't be bothered to fit this in too
+		if (pge->GetMouse(0).bPressed) {
+			olc::vf2d mousePos = pge->GetMousePos();
+			if (PointInQuad(mousePos, restartButtonPosition, olc::vf2d(restartButton->sprite->width, restartButton->sprite->height))) {
+				*levelIndex = -(*levelIndex);
+				return; // Because I don't want the stuff below to try to do stuff with an invalid array index
+						// It becomes positive again on the next frame if you have a look at Render.h line ~160
+			}
+		}
 
+		// I know this is bad - hard coding the positions and repetition
 		pge->DrawString(olc::vf2d(10, 65), "Time Remaining: " + std::to_string((int)timeRemaining), textColour, textScale);
 		pge->DrawString(olc::vf2d(10, 85), "Required: " + std::to_string(circlesRequired), textColour, textScale);
 		pge->DrawString(olc::vf2d(10, 105), "Scored: " + std::to_string(initialCircleAmount - circlesRemaining) + "/" + std::to_string(initialCircleAmount), textColour, textScale);
-		pge->DrawString(olc::vf2d(10, 125), "Level: " + std::to_string(levelIndex), textColour, textScale);
+		pge->DrawString(olc::vf2d(10, 125), "Level: " + std::to_string(*levelIndex), textColour, textScale);
 
-		if (levelIndex == 0) {
+		// I know this is also bad
+		if (*levelIndex == 0) {
 			pge->DrawString(olc::vf2d(pge->ScreenWidth() / 3, 400), "Use the options at the top", textColour, textScale);
 			pge->DrawString(olc::vf2d((pge->ScreenWidth() / 4) + 20, 420), "left to alter the direction of time", textColour, textScale);			
 		}
 
-		if (levelIndex == 1) {
+		if (*levelIndex == 1) {
 			pge->DrawString(olc::vf2d(pge->ScreenWidth() / 3 + 20, 400), "You can move platforms", textColour, textScale);
 			pge->DrawString(olc::vf2d((pge->ScreenWidth() / 3 + 40) + 20, 420), "using the anchors", textColour, textScale);
 
@@ -90,7 +105,7 @@ public:
 			pge->DrawString(olc::vf2d(pge->ScreenWidth() / 3 + 40, 500), "Platforms are porous", textColour, textScale);
 		}
 
-		if (levelIndex == 2) {
+		if (*levelIndex == 2) {
 			pge->DrawString(olc::vf2d(pge->ScreenWidth() / 4 + 60, 450), "Grey platforms cannot be moved", textColour, textScale);
 
 			pge->DrawString(olc::vf2d(pge->ScreenWidth() / 4 + 20, 490), "Water droplets have surface tension", textColour, textScale);
@@ -112,8 +127,6 @@ public:
 		});
 	}
 private:
-	std::string suffix = "Unselected";
-
 	bool PointInQuad(olc::vf2d point, olc::vf2d quad, olc::vf2d quadSize) {
 		if (
 			point.x >= quad.x &&

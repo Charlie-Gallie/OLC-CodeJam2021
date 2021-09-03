@@ -192,7 +192,7 @@ public:
 			if (PointInQuad(position, goal->position, olc::vf2d(goal->sprite->width, goal->sprite->height))) goalScored = true;
 			
 			colour = olc::DARK_BLUE;
-			acceleration = (-velocity * 0.8f) * dt;
+			acceleration = -velocity * 0.8f;
 			velocity += acceleration * dt;
 			nextPosition = position + (velocity * dt);
 
