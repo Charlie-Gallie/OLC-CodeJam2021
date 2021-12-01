@@ -52,7 +52,7 @@ public:
 		}
 
 		/*
-			The rate of raindrops breaks when the FPS rises
+			The rate of raindrops is dependant on FPS
 		*/
 
 		for (int index = 0; index < rainDrops.size(); index++) {
