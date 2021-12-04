@@ -27,7 +27,8 @@ using namespace std;
 *	- Nothing is done when the player finishes the last level, I only check that 'levelIndex' isn't larger than the amount of elements
 *	  in the vector storing all the levels - every frame.
 * 
-*	- The game is just one big problem. Just take this code as a learning experience of what not to do. Sadly I'm not really joking.
+*	- Plus more poorly designed elements. Primarily, please just know that I don't consider this a good demonstration of quality C++
+	  nor my skills.
 */
 
 int main() {
