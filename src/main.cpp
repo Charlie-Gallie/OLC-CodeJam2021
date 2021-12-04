@@ -8,7 +8,7 @@ using namespace std;
 /*
 * This game is programmed really bad.
 * For context, I had only a few hours over the 9 days to create all of this and I didn't plan for a lot of features therefore, many
-* elements of gameplay is just forced in, and some parts don't even work, such as everything listed below.
+* elements of gameplay are just forced in, and some parts don't even work, such as everything listed below.
 * 
 * Some known problems;
 *	- The reset button doesn't work, refer to Render.h around line 150 to see why.
